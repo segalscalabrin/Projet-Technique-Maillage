@@ -1,6 +1,7 @@
 #include "include.h"
 
-void calculerCercleCirconscrit(Triangle *t)
+
+void computeCircumscribedCircle(Triangle *t)
 {
     Point A = t->sommets[0];
     Point B = t->sommets[1];
@@ -23,7 +24,7 @@ void calculerCercleCirconscrit(Triangle *t)
 }
 
 
-bool pointDansCercleCirconscrit(Triangle *triangle, Point *point) 
+bool isPointInCircumscribedCircle(Triangle *triangle, Point *point) 
 {
     double dx = point->x - triangle->centre_circ.x;
     double dy = point->y - triangle->centre_circ.y;
@@ -32,17 +33,26 @@ bool pointDansCercleCirconscrit(Triangle *triangle, Point *point)
     return distance <= triangle->rayon_circ;
 }
 
+
+
+
+
+
+
+
+
+
 int main() 
 {
     Triangle t = {{{{0, 0}, {4, 0}, {2, 3}}}, {1, 2, 3}, {}, 0.0, true};
-    calculerCercleCirconscrit(&t);
+    computeCircumscribedCircle(&t);
     std::cout << "Premier sommet : (" << t.sommets[0].x << ", " << t.sommets[0].y << ")\n";
     std::cout << "Cercle circ : (" << t.centre_circ.x << ", " << t.centre_circ.y << ")\n";
     std::cout << "Rayon circ : (" << t.rayon_circ << ")\n";
 
-    Point p ={1, 2};
+    Point p = {1, 2};
 
-    cout << pointDansCercleCirconscrit(&t, &p) << endl;
+    cout << isPointInCircumscribedCircle(&t, &p) << endl;
 
     return 0;
 }
