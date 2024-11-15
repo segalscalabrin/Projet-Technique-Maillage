@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <string>
+#include "include.h"
 
 int main()
 {
@@ -14,7 +10,7 @@ int main()
     
     
     // ouverture du fichier .mesh et lecture des données d'entrée
-    std::ifstream file("input.mesh");
+    std::ifstream file("data/input.mesh");
     if (file)
     {
         // lire header
