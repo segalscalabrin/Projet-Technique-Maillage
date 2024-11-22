@@ -1,5 +1,5 @@
 #include "include.h"
 
-void computeCircumscribedCircle(Triangle *t);
-bool isPointInCircumscribedCircle(Triangle *triangle, Point *point);
+void calculerCercleCirconscrit(Triangle *t);
+bool pointDansCercleCirconscrit(Triangle *triangle, Point *point);
 Cavite idCavite (vector<Triangle> *triangulation, Point *pt);
