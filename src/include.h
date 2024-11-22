@@ -16,15 +16,31 @@ struct Point
     double y; 
 };
 
+struct Arete
+{
+    int pt1;
+    int pt2;
+    bool areteValide;
+};
+
+
 struct Triangle
 {
     array<Point, 3> sommets;
+    array<int,3> sommetID; // attention a initialiser 
     array<int, 3> voisins;
 
     Point centre_circ;
     double rayon_circ;
 
     bool valide;
+};
+
+struct Cavite
+{
+    vector<Point> sommets; 
+    vector<int> sommetsID; 
+    vector<Arete> aretes;
 };
 
 #endif // INCLUDE_H

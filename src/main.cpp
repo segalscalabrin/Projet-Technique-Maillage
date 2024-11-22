@@ -1,4 +1,5 @@
 #include "include.h"
+#include "maths.h"
 
 int main()
 {
@@ -7,10 +8,8 @@ int main()
     double bin(0);
     std::vector<double> vertices, edges, triangles;
     
-    
-    
     // ouverture du fichier .mesh et lecture des données d'entrée
-    std::ifstream file("data/input.mesh");
+    std::ifstream file("data/test.mesh");
     if (file)
     {
         // lire header
@@ -38,11 +37,11 @@ int main()
                     file>>vertices[vertex*2]>>vertices[vertex*2+1]>>bin;
                 }
 
-                /*for (int i=0; i<vertices.size(); i++)
+                for (unsigned int i=0; i<vertices.size(); i++)
                 {
                     std::cout << vertices[i] << " ";
                 }
-                std::cout << std::endl;*/
+                std::cout << std::endl;
             }
             else if (mot=="Edges")
             {
@@ -54,11 +53,11 @@ int main()
                     file>>edges[edge*2]>>edges[edge*2+1]>>bin;
                 }
 
-                /*for (int i=0; i<edges.size(); i++)
-                {
-                    std::cout << edges[i] << " ";
-                }
-                std::cout << std::endl;*/
+                //for (int i=0; i<edges.size(); i++)
+                //{
+                //    std::cout << edges[i] << " ";
+                //}
+                //std::cout << std::endl;
             }
             else if (mot=="Triangles")
             {
@@ -72,11 +71,11 @@ int main()
                     file>>triangles[triangle*3]>>triangles[triangle*3+1]>>triangles[triangle*3+2]>>bin;
                 }
 
-                /*for (int i=0; i<triangles.size(); i++)
+                for (unsigned int i=0; i<triangles.size(); i++)
                 {
                     std::cout << triangles[i] << " ";
                 }
-                std::cout << std::endl;*/
+                std::cout << std::endl;
             }
         }
         
@@ -87,8 +86,51 @@ int main()
         printf("ERREUR : impossible d'ouvrir le fichier !\n");
     }
 
+    //initialisation de la triangulation
+    std::vector<Triangle> triangulation(nbTriangles);
+    for (int i=0; i<nbTriangles; i ++)
+    {
+        for (int j=0; j<3; j++)
+        {
+            triangulation[i].sommetID[j] = triangles[3*i+j];
+            triangulation[i].sommets[j].x = vertices[(triangulation[i].sommetID[j]-1)*2];
+            triangulation[i].sommets[j].y = vertices[(triangulation[i].sommetID[j]-1)*2+1];
+            triangulation[i].valide = true;
+        }       
+        std::cout << triangulation[i].sommetID[0]<< " " << triangulation[i].valide  << std::endl;
+    }
+    
+    std::cout<< "1=" <<triangulation[0].sommets[0].x << std::endl;
 
-    // création de la boite englobante
+    // point à ajouter
+    Point pt;
+    pt.x = 3.65;
+    pt.y = 5.05;
+
+    // calcul de la cavité
+    printf("\ncréation de la cavite\n");
+    Cavite cavite;
+    cavite = idCavite (&triangulation, &pt);
+
+    printf("cavite : \n");
+    printf("sommets : \n");
+    for (unsigned int i=0; i<cavite.sommets.size(); i++)
+    {
+        printf (" - ID = %d, x = %lf, y = %lf\n", cavite.sommetsID[i], cavite.sommets[i].x, cavite.sommets[i].y);
+    }
+
+    printf("aretes : \n");
+    for (unsigned int i=0; i<cavite.aretes.size(); i++)
+    {
+        if (cavite.aretes[i].areteValide)
+        {
+            printf (" - pt1 = %d, pt2 = %d\n", cavite.aretes[i].pt1, cavite.aretes[i].pt2);
+        }
+        
+    }
+
+
+    /*// création de la boite englobante
     double xmin(vertices[0]), xmax(vertices[0]), ymin(vertices[1]), ymax(vertices[1]), delta_x, delta_y;
     for (int i=0;i<nbVertices;i++)
     {
@@ -113,9 +155,12 @@ int main()
 
     printf("xmin : %f, xmax : %f, ymin : %f, ymax : %f \n", xmin, xmax, ymin, ymax);
     delta_x = xmax-xmin;
-    delta_y = ymax-ymin;
+    delta_y = ymax-ymin;*/
 
     
+
+
+
 
     //ecrire le maillage dans un fichier
     std::ofstream file_out;
