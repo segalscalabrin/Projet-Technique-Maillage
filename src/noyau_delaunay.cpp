@@ -1,4 +1,4 @@
-#include "include.h"
+/*#include "include.h"
 
 
 double areaTriangle(Point A, Point B, Point C) {
@@ -49,4 +49,4 @@ int main() {
     }
 
     return 0;
-}
+}*/
