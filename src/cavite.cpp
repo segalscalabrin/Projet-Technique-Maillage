@@ -13,6 +13,8 @@ Cavite idCavite (vector<Triangle> *triangulation, Point *pt)
         {
             //on calcul le cercle et on teste si le point à ajouter est dans le cercle
             calculerCercleCirconscrit(&(triangulation->at(t)));
+            printf("sommets du triangle étudié : %d, %d, %d\n", triangulation->at(t).sommetID[0], triangulation->at(t).sommetID[1], triangulation->at(t).sommetID[2]);
+            printf("cercle : centre = (%lf, %lf), rayon = %lf\n", triangulation->at(t).centre_circ.x, triangulation->at(t).centre_circ.y, triangulation->at(t).rayon_circ);
             
             if(pointDansCercleCirconscrit(&(triangulation->at(t)), pt)) // si le point est dans le cercle circonscrit,
             {

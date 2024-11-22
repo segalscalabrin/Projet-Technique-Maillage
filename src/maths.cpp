@@ -15,6 +15,8 @@ void calculerCercleCirconscrit(Triangle *t)
     double slopeAB = (B.y - A.y) / (B.x - A.x);
     double slopeAC = (C.y - A.y) / (C.x - A.x);
 
+    printf("pente des mediatrice : %lf, %lf\n", slopeAB, slopeAC);
+
     // Pentes des médiatrices (perpendiculaires)
     double perpSlopeAB = -1.0 / slopeAB;
     double perpSlopeAC = -1.0 / slopeAC;
