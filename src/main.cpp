@@ -1,5 +1,7 @@
 #include "include.h"
+
 #include "maths.h"
+#include "cavite.h"
 
 int main()
 {
@@ -129,6 +131,10 @@ int main()
         
     }
 
+    //ajout du point dans la cavite
+    reconnectionCavite(pt, nbVertices+1, cavite, &triangulation);
+
+
 
     /*// création de la boite englobante
     double xmin(vertices[0]), xmax(vertices[0]), ymin(vertices[1]), ymax(vertices[1]), delta_x, delta_y;
@@ -167,7 +173,31 @@ int main()
     file_out.open("output.mesh");
     if (file_out)
     {
+        file_out << "MeshVersionFormatted 2" << std::endl;
+        file_out << std::endl;
+        file_out << "Dimension 2" << std::endl;
+        file_out << std::endl;
+        file_out << "Vertices" << std::endl;
+        file_out << nbVertices+1 << std::endl;
+        for (int vertex=0; vertex<nbVertices; vertex++)
+        {
+            file_out << vertices[vertex*2] << " " << vertices[vertex*2+1] << " " << 0 << endl;
+        }
+        file_out << pt.x << " " << pt.y << " " << 0 << endl;
 
+        file_out << std::endl;
+        file_out << "Triangles" << std::endl;
+        file_out << triangulation.size() << std::endl;
+        for (unsigned int tri=0; tri<triangulation.size(); tri++)
+        {
+            if (triangulation[tri].valide)
+            {
+                file_out << triangulation[tri].sommetID[0] << " " << 
+                triangulation[tri].sommetID[1] << " " << triangulation[tri].sommetID[2] << " " << 0 << std::endl;
+            }
+        }
+        file_out << std::endl;
+        file_out << "End" << std::endl;
     }
     file_out.close();
     return 0;
