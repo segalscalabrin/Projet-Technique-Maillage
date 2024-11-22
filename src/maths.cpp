@@ -122,6 +122,7 @@ Cavite idCavite (vector<Triangle> *triangulation, Point *pt)
                     currentEdge.pt1 = triangulation->at(t).sommetID[i];
                     currentEdge.pt2 = triangulation->at(t).sommetID[(i+1)%3];
                     currentEdge.areteValide = true;
+                    std::cout << "arete valide : " << " " << currentEdge.areteValide << std::endl;
                     printf("hi\n");
                     for (unsigned int areteC=0; areteC<cavite.aretes.size(); areteC++)
                     {
@@ -131,6 +132,7 @@ Cavite idCavite (vector<Triangle> *triangulation, Point *pt)
                         if (((cavite.aretes[areteC].pt1 == currentEdge.pt1)&&(cavite.aretes[areteC].pt2 == currentEdge.pt2))
                          || ((cavite.aretes[areteC].pt1 == currentEdge.pt2)&&(cavite.aretes[areteC].pt2 == currentEdge.pt1)))
                         {
+                            std::cout << "arete valide : " << " " << cavite.aretes[areteId].areteValide << std::endl;
                             if (cavite.aretes[areteId].areteValide)
                             {
                                 printf("hi");
@@ -142,7 +144,7 @@ Cavite idCavite (vector<Triangle> *triangulation, Point *pt)
                     }
                     
                     //printf("hi\n");
-                    //std::cout << isArreteInCavite << " " << true << std::endl;
+                    std::cout << isArreteInCavite << " " << true << std::endl;
                     // si l'arrete n'est pas dans la cavité, on l'ajoute
                     if (!isArreteInCavite)
                     {
@@ -152,7 +154,7 @@ Cavite idCavite (vector<Triangle> *triangulation, Point *pt)
                     // on la supprime si elle y est
                     else
                     {
-                        cavite.aretes[areteId].areteValide = false;
+                        //cavite.aretes[areteId].areteValide = false;
                     }
                 }
             }
