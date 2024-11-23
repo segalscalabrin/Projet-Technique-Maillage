@@ -171,7 +171,7 @@ int main()
     }
 
     //ajout du point dans la cavite
-    reconnectionCavite(pt, nbVertices+1, cavite, &triangulation);
+    reconnectionCavite(pt, nbVertices+5, cavite, &triangulation);
 
 
 
