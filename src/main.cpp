@@ -33,7 +33,7 @@ int main()
             {
                 file>>nbVertices;
                 std::cout << "nbVertices : " << nbVertices << std::endl;
-                vertices.resize(nbVertices*2, 0.0);
+                vertices.resize((nbVertices+4)*2, 0.0);
                 for (int vertex=0; vertex<nbVertices; vertex++)
                 {
                     file>>vertices[vertex*2]>>vertices[vertex*2+1]>>bin;
@@ -88,21 +88,60 @@ int main()
         printf("ERREUR : impossible d'ouvrir le fichier !\n");
     }
 
+    // création de la boite englobante
+    double xmin(vertices[0]), xmax(vertices[0]), ymin(vertices[1]), ymax(vertices[1]), delta_x, delta_y;
+    for (int i=0;i<nbVertices;i++)
+    {
+        if(vertices[2*i]<xmin)
+        {
+            xmin = vertices[2*i];
+        }
+        else if (vertices[2*i] > xmax)
+        {
+            xmax = vertices[2*i];
+        }
+
+        if(vertices[2*i+1] < ymin)
+        {
+            ymin = vertices[2*i+1];
+        }
+        else if (vertices[2*i+1] > ymax)
+        {
+            ymax = vertices[2*i+1];
+        }
+    }
+
+    printf("xmin : %f, xmax : %f, ymin : %f, ymax : %f \n", xmin, xmax, ymin, ymax);
+    delta_x = xmax-xmin;
+    delta_y = ymax-ymin;
+    
+    vertices[nbVertices*2] = xmin-delta_x;
+    vertices[nbVertices*2+1] = ymin-delta_y;
+    vertices[(nbVertices+1)*2] = xmin-delta_x;
+    vertices[(nbVertices+1)*2+1] = ymax+delta_y;
+    vertices[(nbVertices+2)*2] = xmax+delta_x;
+    vertices[(nbVertices+2)*2+1] = ymin-delta_y;
+    vertices[(nbVertices+3)*2] = xmax+delta_x;
+    vertices[(nbVertices+3)*2+1] = ymax+delta_y;
+
+    std::vector<int> triangleBoite(6);
+    triangleBoite = {1+nbVertices, 2+nbVertices, 4+nbVertices, 1+nbVertices, 3+nbVertices, 4+nbVertices};
+
     //initialisation de la triangulation
-    std::vector<Triangle> triangulation(nbTriangles);
-    for (int i=0; i<nbTriangles; i ++)
+    std::vector<Triangle> triangulation(2);
+    for (int i=0; i<2; i ++)
     {
         for (int j=0; j<3; j++)
         {
-            triangulation[i].sommetID[j] = triangles[3*i+j];
+            triangulation[i].sommetID[j] = triangleBoite[3*i+j];
+            //printf("ID sommet : %d\n", triangulation[i].sommetID[j]);
             triangulation[i].sommets[j].x = vertices[(triangulation[i].sommetID[j]-1)*2];
             triangulation[i].sommets[j].y = vertices[(triangulation[i].sommetID[j]-1)*2+1];
             triangulation[i].valide = true;
         }       
-        std::cout << triangulation[i].sommetID[0]<< " " << triangulation[i].valide  << std::endl;
+        //std::cout << triangulation[i].sommets[1].x<< " " << triangulation[i].valide  << std::endl;
     }
     
-    std::cout<< "1=" <<triangulation[0].sommets[0].x << std::endl;
 
     // point à ajouter
     Point pt;
@@ -131,33 +170,12 @@ int main()
         
     }
 
+    //ajout du point dans la cavite
+    reconnectionCavite(pt, nbVertices+5, cavite, &triangulation);
 
-    /*// création de la boite englobante
-    double xmin(vertices[0]), xmax(vertices[0]), ymin(vertices[1]), ymax(vertices[1]), delta_x, delta_y;
-    for (int i=0;i<nbVertices;i++)
-    {
-        if(vertices[2*i]<xmin)
-        {
-            xmin = vertices[2*i];
-        }
-        else if (vertices[2*i] > xmax)
-        {
-            xmax = vertices[2*i];
-        }
 
-        if(vertices[2*i+1] < ymin)
-        {
-            ymin = vertices[2*i+1];
-        }
-        else if (vertices[2*i+1] > ymax)
-        {
-            ymax = vertices[2*i+1];
-        }
-    }
 
-    printf("xmin : %f, xmax : %f, ymin : %f, ymax : %f \n", xmin, xmax, ymin, ymax);
-    delta_x = xmax-xmin;
-    delta_y = ymax-ymin;*/
+    
 
     
 
@@ -169,7 +187,31 @@ int main()
     file_out.open("output.mesh");
     if (file_out)
     {
+        file_out << "MeshVersionFormatted 2" << std::endl;
+        file_out << std::endl;
+        file_out << "Dimension 2" << std::endl;
+        file_out << std::endl;
+        file_out << "Vertices" << std::endl;
+        file_out << nbVertices+5 << std::endl;
+        for (int vertex=0; vertex<nbVertices+4; vertex++)
+        {
+            file_out << vertices[vertex*2] << " " << vertices[vertex*2+1] << " " << 0 << endl;
+        }
+        file_out << pt.x << " " << pt.y << " " << 0 << endl;
 
+        file_out << std::endl;
+        file_out << "Triangles" << std::endl;
+        file_out << triangulation.size() << std::endl;
+        for (unsigned int tri=0; tri<triangulation.size(); tri++)
+        {
+            if (triangulation[tri].valide)
+            {
+                file_out << triangulation[tri].sommetID[0] << " " << 
+                triangulation[tri].sommetID[1] << " " << triangulation[tri].sommetID[2] << " " << 0 << std::endl;
+            }
+        }
+        file_out << std::endl;
+        file_out << "End" << std::endl;
     }
     file_out.close();
     return 0;

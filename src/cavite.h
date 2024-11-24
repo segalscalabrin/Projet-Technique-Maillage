@@ -5,4 +5,4 @@
 
 Cavite idCavite (vector<Triangle> *triangulation, Point *pt);
 
-void reconnectionCavite(Cavite cav, vector<Triangle> *triangulation);
+void reconnectionCavite(Point p, int ptID, Cavite cav, vector<Triangle> *triangulation);

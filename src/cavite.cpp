@@ -79,28 +79,51 @@ Cavite idCavite (vector<Triangle> *triangulation, Point *pt)
 }
 
 
-void reconnectionCavite(Point p, Cavite cav, vector<Triangle> *triangulation)
+void reconnectionCavite(Point p, int ptID, Cavite cav, vector<Triangle> *triangulation)
 {
-    for(Arete arete : cav.aretes) {
-        Triangle new_tri;
-        Point p1, p2;
-        int p1iD, p2iD; 
-        array<Point, 3> sommets;
-        array<int,3> sommetsID;
+    for(Arete arete : cav.aretes)
+    {
+        if (arete.areteValide)
+        {
+            Triangle new_tri;
+            Point p1({-1,-1}), p2({-1,-1});
+            //int p1iD, p2iD; 
+            //array<Point, 3> sommets;
+            //array<int,3> sommetsID;
 
-        p1 = cav.sommets[arete.pt1];
-        p2 = cav.sommets[arete.pt2];
+            /*p1 = cav.sommets[arete.pt1];
+            p2 = cav.sommets[arete.pt2];
 
-        p1iD = cav.sommetsID[arete.pt1];
-        p2iD = cav.sommetsID[arete.pt2];
+            p1iD = cav.sommetsID[arete.pt1];
+            p2iD = cav.sommetsID[arete.pt2];
 
-        sommets = {p1, p2, p};
+            sommets = {p1, p2, p};
 
-        sommetsID = {p1iD, p2iD, static_cast<int>(triangulation->size())};
+            sommetsID = {p1iD, p2iD, static_cast<int>(triangulation->size())};
 
-        new_tri.sommets = sommets;
-        new_tri.sommetID = sommetsID;
+            new_tri.sommets = sommets;
+            new_tri.sommetID = sommetsID;*/
 
-        triangulation->push_back(new_tri);
+            for (unsigned int i=0; i<cav.sommetsID.size(); i++)
+            {
+                if (arete.pt1 == cav.sommetsID[i])
+                {
+                    p1=cav.sommets[i];
+                }
+                if (arete.pt2 == cav.sommetsID[i])
+                {
+                    p2=cav.sommets[i];
+                }
+            }
+            //sommets = {p1, p2, p};
+            
+
+            new_tri.sommets = {p1, p2, p};
+            new_tri.sommetID = {arete.pt1, arete.pt2, ptID};
+            new_tri.valide = true;
+
+            triangulation->push_back(new_tri);
+        }
+        
     }
 }
