@@ -91,8 +91,8 @@ def plot_meshes_side_by_side(vertices_in, edges_in, triangles_in, vertices_out, 
 
 
 # Nom des fichiers
-filename_in = "data/test.mesh"
-filename_out = "output.mesh"
+filename_in = "data/input.mesh"
+filename_out = "data/output.mesh"
 
 # Lire les fichiers
 vertices_in, edges_in, triangles_in = read_mesh_file(filename_in)

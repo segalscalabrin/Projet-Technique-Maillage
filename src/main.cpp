@@ -16,7 +16,7 @@ int main()
 
     Mesh mesh;
     string input_path;
-    input_path = "data/test.mesh";
+    input_path = "data/input.mesh";
     read_mesh(input_path, &mesh);
 
     cout << endl;
@@ -34,7 +34,7 @@ int main()
         calculerCercleCirconscrit(&mesh, i);
     }
     
-    Point pt = {6, 4};
+    Point pt = {3.65, 5.05};
 
     cout << endl;
 
@@ -66,7 +66,7 @@ int main()
     cout << endl;
 
     string output_path;
-    output_path = "output.mesh";
+    output_path = "data/output.mesh";
     save_mesh(output_path, &mesh);
 
     cout << endl;

@@ -3,3 +3,5 @@ run
 solutions/*
 
 .vscode
+
+plot/__pycache__
