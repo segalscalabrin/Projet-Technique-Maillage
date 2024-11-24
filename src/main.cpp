@@ -11,6 +11,7 @@ int main()
     // --------------------------------------
     cout << "----------------------------------------------------------------------------" << endl;
     cout << "Lecture du maillage :" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
     cout << endl;
 
     Mesh mesh;
@@ -19,14 +20,13 @@ int main()
     read_mesh(input_path, &mesh);
 
     cout << endl;
-    cout << "Fin de la lecture du maillage" << endl;
-    cout << "----------------------------------------------------------------------------" << endl;
 
     // --------------------------------------
     //   Calcul des données sur le maillage
     // --------------------------------------
     cout << "----------------------------------------------------------------------------" << endl;
     cout << "Calcul des données sur le maillage :" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
     cout << endl;
 
     cout << "Calcul des cercles circonscrits aux triangles" << endl;
@@ -37,24 +37,24 @@ int main()
     Point pt = {6, 4};
 
     cout << endl;
-    cout << "Fin du calcul des données sur le maillage" << endl;
-    cout << "----------------------------------------------------------------------------" << endl;
 
     // --------------------------------------
     //       Modification du maillage
     // --------------------------------------
     cout << "----------------------------------------------------------------------------" << endl;
     cout << "Modification du maillage :" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
     cout << endl;
 
     cout << "Création de la cavite" << endl;
     vector<Arete> cavite;
     cavite = idCavite(&mesh, &pt);
 
+    cout << "Reconnection de la cavite" << endl;
+    reconnectionCavite(cavite, &mesh, pt);
+
 
     cout << endl;
-    cout << "Fin du calcul des données sur le maillage" << endl;
-    cout << "----------------------------------------------------------------------------" << endl;
 
    
     // --------------------------------------
@@ -62,6 +62,7 @@ int main()
     // --------------------------------------
     cout << "----------------------------------------------------------------------------" << endl;
     cout << "Sauvegarde du nouveau maillage :" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
     cout << endl;
 
     string output_path;
@@ -69,8 +70,6 @@ int main()
     save_mesh(output_path, &mesh);
 
     cout << endl;
-    cout << "Fin du calcul des données sur le maillage" << endl;
-    cout << "----------------------------------------------------------------------------" << endl;
 
     return 0;
 

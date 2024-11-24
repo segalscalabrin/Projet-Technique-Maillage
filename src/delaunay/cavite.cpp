@@ -7,11 +7,9 @@ void ajouterAreteACavite(Mesh *mesh, vector<Arete> *cavite, Arete currentEdge)
     for (vector<Arete>::iterator it = cavite->begin(); it != cavite->end(); ++it)
     {
         // Vérifie si les arêtes sont identiques (dans les deux sens)
-        if ((it->IDpt1 == currentEdge.IDpt1 && it->IDpt2 == currentEdge.IDpt2) ||
-            (it->IDpt1 == currentEdge.IDpt2 && it->IDpt2 == currentEdge.IDpt1)) {
-            // Invalide l'arête et la supprime de la cavité
-            it = cavite->erase(it); // Supprime et récupère le nouvel itérateur
-            return; // Arrête la fonction après suppression
+        if ((it->IDpt1 == currentEdge.IDpt1 && it->IDpt2 == currentEdge.IDpt2) || (it->IDpt1 == currentEdge.IDpt2 && it->IDpt2 == currentEdge.IDpt1)) {
+            it = cavite->erase(it); 
+            return; 
         }
     }
 
@@ -25,16 +23,6 @@ void ajouterTriangleACavite(Mesh *mesh, vector<Arete> *cavite, unsigned int t)
 {
     Triangle *triangle;
     triangle = &(mesh->Triangles[t]);
-
-    printf("Sommets du triangle à enlever : %d, %d, %d\n", 
-           triangle->sommetsID[0], 
-           triangle->sommetsID[1], 
-           triangle->sommetsID[2]);
-
-    printf("Cercle : centre = (%lf, %lf), rayon = %lf\n", 
-           triangle->centre_circ.x, 
-           triangle->centre_circ.y, 
-           triangle->rayon_circ);
 
     triangle->triangleValide = false; // Le triangle est invalidé
     mesh->nbTriangles -= 1;
@@ -64,36 +52,20 @@ vector<Arete> idCavite(Mesh *mesh, Point *pt)
 }
 
 
-/*
-void reconnectionCavite(Point p, int ptID, Cavite cav, Mesh *mesh)
+void reconnectionCavite(vector<Arete> cavite, Mesh *mesh, Point pt)
 {
-    for(Arete arete : cav.aretes)
+    mesh->nbVertices += 1;
+    mesh->Vertices.push_back(pt);
+    for(Arete arete : cavite)
     {
-        if (arete.areteValide)
-        {
-            Triangle new_tri;
-            Point p1({-1,-1}), p2({-1,-1});
+        Triangle new_tri;
+      
+        new_tri.sommetsID = {arete.IDpt1, arete.IDpt2, mesh->nbVertices-1};
+        new_tri.triangleValide = true;
 
-            for (unsigned int i=0; i<cav.sommetsID.size(); i++)
-            {
-                if (arete.IDpt1 == cav.sommetsID[i])
-                {
-                    p1=cav.sommets[i];
-                }
-                if (arete.IDpt2 == cav.sommetsID[i])
-                {
-                    p2=cav.sommets[i];
-                }
-            }
-            //sommets = {p1, p2, p};
-            
+        mesh->nbTriangles += 1;
+        mesh->Triangles.push_back(new_tri);
 
-            new_tri.sommets = {p1, p2, p};
-            new_tri.sommetsID = {arete.IDpt1, arete.IDpt2, ptID};
-            new_tri.triangleValide = true;
-
-            mesh->Tripush_back(new_tri);
-        }
-        
+        calculerCercleCirconscrit(mesh, mesh->nbVertices-1);
     }
-}*/
+}
