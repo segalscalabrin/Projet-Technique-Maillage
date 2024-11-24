@@ -43,4 +43,15 @@ struct Cavite
     vector<Arete> aretes;
 };
 
+struct Mesh
+{
+    int nbVertices;
+    int nbEdges;
+    int nbTriangles;
+
+    vector<double> Vertices;
+    vector<double> Edges;
+    vector<double> Triangles;
+};
+
 #endif // INCLUDE_H
