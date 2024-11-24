@@ -1,10 +1,13 @@
 #include "maths.h"
 
-void calculerCercleCirconscrit(Triangle *t)
+void calculerCercleCirconscrit(Mesh *mesh, int idTriangle)
 {
-    Point A = t->sommets[0];
-    Point B = t->sommets[1];
-    Point C = t->sommets[2];
+    Triangle *triangle;
+    triangle = &(mesh->Triangles[idTriangle]);
+
+    Point A = mesh->Vertices[triangle->sommetsID[0]];
+    Point B = mesh->Vertices[triangle->sommetsID[1]];
+    Point C = mesh->Vertices[triangle->sommetsID[2]];
 
     double mx1 = (A.x + B.x) / 2.0;
     double my1 = (A.y + B.y) / 2.0;
@@ -29,18 +32,18 @@ void calculerCercleCirconscrit(Triangle *t)
     double r = sqrt(dx * dx + dy * dy);
 
     // Affectation des résultats
-    t->centre_circ.x = xCentre;
-    t->centre_circ.y = yCentre;
+    triangle->centre_circ.x = xCentre;
+    triangle->centre_circ.y = yCentre;
 
-    t->rayon_circ = r;
+    triangle->rayon_circ = r;
 }
 
 
-bool pointDansCercleCirconscrit(Triangle *triangle, Point *point) 
+bool pointDansCercleCirconscrit(Point *point, Mesh *mesh, int idTriangle) 
 {
-    double dx = point->x - triangle->centre_circ.x;
-    double dy = point->y - triangle->centre_circ.y;
+    double dx = point->x - mesh->Triangles[idTriangle].centre_circ.x;
+    double dy = point->y - mesh->Triangles[idTriangle].centre_circ.y;
     double distance = sqrt(dx * dx + dy * dy);
 
-    return distance <= triangle->rayon_circ;
+    return distance <= mesh->Triangles[idTriangle].rayon_circ;
 }

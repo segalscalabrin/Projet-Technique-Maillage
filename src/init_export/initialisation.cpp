@@ -6,55 +6,65 @@ void read_mesh(string input_path, Mesh *mesh)
     //initialisation des variables 
     int nbVertices(0), nbTriangles(0), nbEdges(0);
     double bin(0);
-    std::vector<double> vertices, edges, triangles;
+    
+    vector<Point> vertices;
+    vector<Arete> edges;
+    vector<Triangle> triangles;
     
     // ouverture du fichier .mesh et lecture des données d'entrée
-    std::ifstream file(input_path);
+    ifstream file(input_path);
     if (file)
     {
         // lire header
-        std::string ligne;
+        string ligne;
         getline(file, ligne);
-        std::cout << ligne << std::endl;
+        cout << ligne << endl;
         getline(file, ligne);
-        std::cout << ligne << std::endl;
+        cout << ligne << endl;
         getline(file, ligne);
-        std::cout << ligne << std::endl;  
-        std::cout << std::endl;        
+        cout << ligne << endl;  
+        cout << endl;        
 
         while(getline(file, ligne)) //Tant qu'on n'est pas à la fin, on lit
         {
-            std::string mot;
+            string mot;
             file>>mot;
             if (mot=="Vertices")
             {
                 file>>nbVertices;
-                std::cout << "nbVertices : " << nbVertices << std::endl;
-                vertices.resize(nbVertices*2, 0.0);
+                cout << "nbVertices : " << nbVertices << endl;
+                vertices.resize(nbVertices);
                 for (int vertex=0; vertex<nbVertices; vertex++)
                 {
-                    file>>vertices[vertex*2]>>vertices[vertex*2+1]>>bin;
+                    file>>vertices[vertex].x>>vertices[vertex].y>>bin;
                 }
             }
             else if (mot=="Edges")
             {
                 file>>nbEdges;
-                std::cout << "nbEdges : " << nbEdges << std::endl;
-                edges.resize(nbEdges*2, 0.0);
+                cout << "nbEdges : " << nbEdges << endl;
+                edges.resize(nbEdges);
                 for (int edge=0; edge<nbEdges; edge++)
                 {
-                    file>>edges[edge*2]>>edges[edge*2+1]>>bin;
+                    file>>edges[edge].IDpt1>>edges[edge].IDpt2>>bin;
+                    edges[edge].IDpt1 -= 1;
+                    edges[edge].IDpt2 -= 1;
+                    edges[edge].areteValide = true;
                 }
             }
             else if (mot=="Triangles")
             {
                 file>>nbTriangles;
-                std::cout << "nbTriangles : " << nbTriangles << std::endl;
-                triangles.resize(nbTriangles*3, 0.0);
-                printf("triangle %d \n", nbTriangles*3);
+                cout << "nbTriangles : " << nbTriangles << endl;
+                triangles.resize(nbTriangles);
                 for (int triangle=0; triangle<nbTriangles; triangle++)
                 {
-                    file>>triangles[triangle*3]>>triangles[triangle*3+1]>>triangles[triangle*3+2]>>bin;
+                    file>>triangles[triangle].sommetsID[0]>>triangles[triangle].sommetsID[1]>>triangles[triangle].sommetsID[2]>>bin;
+                    triangles[triangle].sommetsID[0] -= 1;
+                    triangles[triangle].sommetsID[1] -= 1;
+                    triangles[triangle].sommetsID[2] -= 1;
+
+                    triangles[triangle].triangleValide = true;
                 }
             }
         }
@@ -71,6 +81,6 @@ void read_mesh(string input_path, Mesh *mesh)
     mesh->nbTriangles = nbTriangles;
     
     mesh->Vertices = vertices;
-    mesh->Edges = edges;
+    mesh->EdgesMesh = edges;
     mesh->Triangles = triangles;
 }

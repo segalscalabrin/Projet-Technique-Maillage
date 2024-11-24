@@ -1,4 +1,4 @@
 #include "include.h"
 
-void calculerCercleCirconscrit(Triangle *t);
-bool pointDansCercleCirconscrit(Triangle *triangle, Point *point);
+void calculerCercleCirconscrit(Mesh *mesh, int idTriangle);
+bool pointDansCercleCirconscrit(Point *point, Mesh *mesh, int idTriangle);

@@ -37,7 +37,6 @@ def read_mesh_file(filename):
         i += 1
 
     return vertices, edges, triangles
-
 def plot_meshes_side_by_side(vertices_in, edges_in, triangles_in, vertices_out, edges_out, triangles_out):
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))  # Deux sous-graphiques côte à côte
 
@@ -46,6 +45,11 @@ def plot_meshes_side_by_side(vertices_in, edges_in, triangles_in, vertices_out, 
     if vertices_in:
         x_in, y_in = zip(*vertices_in)
         ax.scatter(x_in, y_in, color='red', label='Vertices')
+        
+        # Ajouter les indices des sommets
+        for idx, (x, y) in enumerate(vertices_in):
+            ax.text(x+0.2, y+0.2, str(idx), color='black', fontsize=11, ha='center', va='center')
+        
         for edge in edges_in:
             x_coords = [vertices_in[edge[0]][0], vertices_in[edge[1]][0]]
             y_coords = [vertices_in[edge[0]][1], vertices_in[edge[1]][1]]
@@ -64,6 +68,11 @@ def plot_meshes_side_by_side(vertices_in, edges_in, triangles_in, vertices_out, 
     if vertices_out:
         x_out, y_out = zip(*vertices_out)
         ax.scatter(x_out, y_out, color='red', label='Vertices')
+        
+        # Ajouter les indices des sommets
+        for idx, (x, y) in enumerate(vertices_out):
+            ax.text(x+0.2, y+0.2, str(idx), color='black', fontsize=11, ha='center', va='center')
+        
         for edge in edges_out:
             x_coords = [vertices_out[edge[0]][0], vertices_out[edge[1]][0]]
             y_coords = [vertices_out[edge[0]][1], vertices_out[edge[1]][1]]
