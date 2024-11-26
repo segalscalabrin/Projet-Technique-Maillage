@@ -18,28 +18,34 @@ struct Point
 
 struct Arete
 {
-    int pt1;
-    int pt2;
+    int IDpt1;
+    int IDpt2;
     bool areteValide;
 };
 
-
 struct Triangle
 {
-    array<Point, 3> sommets;
-    array<int,3> sommetID; // attention a initialiser 
-    array<int, 3> voisins;
+    array<int,3> sommetsID;
 
     Point centre_circ;
     double rayon_circ;
 
-    bool valide;
+    bool triangleValide;
+};
+
+struct Mesh
+{
+    int nbVertices;
+    int nbEdges;
+    int nbTriangles;
+
+    vector<Point> Vertices;
+    vector<Arete> EdgesMesh;
+    vector<Triangle> Triangles;
 };
 
 struct Cavite
 {
-    vector<Point> sommets; 
-    vector<int> sommetsID; 
     vector<Arete> aretes;
 };
 
