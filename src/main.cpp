@@ -2,6 +2,7 @@
 
 #include "delaunay/cavite.h"
 #include "init_export/initialisation.h"
+#include "frontiere/frontiere.h"
 #include "init_export/export_mesh.h"
 
 int main()
@@ -33,6 +34,10 @@ int main()
     for(int i=0; i<mesh.nbTriangles; i++) {
         calculerCercleCirconscrit(&mesh, i);
     }
+
+    string output_path;
+    output_path = "data/output"+to_string(0)+".mesh";
+    save_mesh(output_path, &mesh);
     
     //Point pt = {3.65, 5.05};
     for (int point=0; point<mesh.nbVertices; point++)
@@ -56,14 +61,38 @@ int main()
 
         //cout << "Reconnection de la cavite" << endl;
         reconnectionCavite(cavite, &mesh, pt, point);
-        string output_path;
-        output_path = "data/output"+to_string(point)+".mesh";
+        //string output_path;
+        output_path = "data/output"+to_string(point+1)+".mesh";
         save_mesh(output_path, &mesh);
 
         //ajout du point dans la cavite
         //reconnectionCavite(pt, nbVertices+5, cavite, &triangulation);
 
         //cout << endl;
+    }
+
+    // --------------------------------------
+    //    vérification des aretes
+    // --------------------------------------
+    bool bordOK (true);
+    for (int edgeb=0; edgeb<mesh.nbEdges; edgeb++)
+    {
+        // pour les arretes de bord, on regarde si ca correspond
+        bool found(false);
+        found = isAreteInMesh(edgeb, &mesh);
+        if (! found)
+        {
+            bordOK = false;
+        }        
+    }
+
+    if (bordOK)
+    {
+        printf("frontiere OK\n");
+    }
+    else{
+        printf("frontiere KO\n");
+        // identifier les aretes qui ne vont pas et faire des swaps 
     }
    
     // --------------------------------------
@@ -74,7 +103,7 @@ int main()
     cout << "----------------------------------------------------------------------------" << endl;
     cout << endl;
 
-    string output_path;
+    //string output_path;
     output_path = "data/output.mesh";
     save_mesh(output_path, &mesh);
 

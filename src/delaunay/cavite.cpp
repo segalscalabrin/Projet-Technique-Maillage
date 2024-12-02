@@ -40,7 +40,7 @@ vector<Arete> idCavite(Mesh *mesh, Point *pt)
     vector<Arete> cavite;
 
     // Pour tous les triangles de la triangulation
-    for (int t = 0; t < mesh->Triangles.size(); t++)
+    for (unsigned int t = 0; t < mesh->Triangles.size(); t++)
     {
         calculerCercleCirconscrit(mesh, t); //ID triangle
         if (mesh->Triangles[t].triangleValide && pointDansCercleCirconscrit(pt, mesh, t))
