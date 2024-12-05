@@ -5,16 +5,20 @@ bool isAreteInMesh(int areteId, Mesh *mesh)
     bool found(false);
     for (unsigned int triangle=0; triangle<mesh->Triangles.size(); triangle++)
     {
-        for (int edge_int=0; edge_int<3; edge_int++)
+        if (mesh->Triangles[triangle].triangleValide)
         {
-            if (
-            ((mesh->EdgesMesh[areteId].IDpt1 == mesh->Triangles[triangle].sommetsID[edge_int])
-            ||(mesh->EdgesMesh[areteId].IDpt2 == mesh->Triangles[triangle].sommetsID[edge_int]))
-            && 
-            ((mesh->EdgesMesh[areteId].IDpt1 == mesh->Triangles[triangle].sommetsID[(edge_int+1)%3])
-            ||(mesh->EdgesMesh[areteId].IDpt2 == mesh->Triangles[triangle].sommetsID[(edge_int+1)%3])))
+            for (int edge_int=0; edge_int<3; edge_int++)
             {
-                found = true;
+                if (
+                ((mesh->EdgesMesh[areteId].IDpt1 == mesh->Triangles[triangle].aretes[edge_int].IDpt1)
+                ||(mesh->EdgesMesh[areteId].IDpt2 == mesh->Triangles[triangle].aretes[edge_int].IDpt1))
+                && 
+                ((mesh->EdgesMesh[areteId].IDpt1 == mesh->Triangles[triangle].aretes[edge_int].IDpt2)
+                ||(mesh->EdgesMesh[areteId].IDpt2 == mesh->Triangles[triangle].aretes[edge_int].IDpt2)))
+                {
+                    found = true;
+                    mesh->Triangles[triangle].aretes[edge_int].areteBord = true;
+                }
             }
         }
     }

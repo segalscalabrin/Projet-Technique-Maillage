@@ -20,7 +20,23 @@ int main()
     input_path = "data/input.mesh";
     read_mesh(input_path, &mesh);
 
+    for (unsigned int i=0; i<mesh.Triangles.size(); i++)
+    {
+        Triangle triangle = mesh.Triangles[i];
+        //cout << triangle.triangleValide << " " <<  endl;
+        if (triangle.triangleValide)
+        {
+            printf("triangle %d : (%d %d %d) ; voisin : %d, %d, %d ; arete : (%d,%d), (%d,%d), (%d,%d)\n", 
+            i, triangle.sommetsID[0], triangle.sommetsID[1], triangle.sommetsID[2], 
+            triangle.triVoisins[0], triangle.triVoisins[1], triangle.triVoisins[2], 
+            triangle.aretes[0].IDpt1, triangle.aretes[0].IDpt2, 
+            triangle.aretes[1].IDpt1, triangle.aretes[1].IDpt2,
+            triangle.aretes[2].IDpt1, triangle.aretes[2].IDpt2);
+        }
+    }
+
     cout << endl;
+
 
     // --------------------------------------
     //   Calcul des données sur le maillage
@@ -29,6 +45,7 @@ int main()
     cout << "Calcul des données sur le maillage :" << endl;
     cout << "----------------------------------------------------------------------------" << endl;
     cout << endl;
+
 
     cout << "Calcul des cercles circonscrits aux triangles" << endl;
     for(int i=0; i<mesh.nbTriangles; i++) {
@@ -50,24 +67,29 @@ int main()
         // --------------------------------------
         //       Modification du maillage
         // --------------------------------------
-        /*cout << "----------------------------------------------------------------------------" << endl;
-        cout << "Modification du maillage :" << endl;
-        cout << "----------------------------------------------------------------------------" << endl;
-        cout << endl;*/
+        //cout << "----------------------------------------------------------------------------" << endl;
+        //cout << "Modification du maillage :" << endl;
+        //cout << "----------------------------------------------------------------------------" << endl;
+        //cout << endl;
 
         //cout << "Création de la cavite" << endl;
-        vector<Arete> cavite;
+        Cavite cavite;
         cavite = idCavite(&mesh, &pt);
 
+        // print cavité
+        /*printf("cavite : \n");
+        for (unsigned int i=0; i<cavite.aretes.size(); i++)
+        {
+            printf("arrete : (%d,%d), voisin de la cavité : %d\n", cavite.aretes[i].IDpt1, cavite.aretes[i].IDpt2, cavite.voisins[i]);
+        }*/
+
         //cout << "Reconnection de la cavite" << endl;
-        reconnectionCavite(cavite, &mesh, pt, point);
+        reconnectionCavite(&cavite, &mesh, pt, point);
         //string output_path;
         output_path = "data/output"+to_string(point+1)+".mesh";
         save_mesh(output_path, &mesh);
 
-        //ajout du point dans la cavite
-        //reconnectionCavite(pt, nbVertices+5, cavite, &triangulation);
-
+        
         //cout << endl;
     }
 
@@ -90,14 +112,33 @@ int main()
     {
         printf("frontiere OK\n");
     }
-    else{
+    else
+    {
         printf("frontiere KO\n");
         // identifier les aretes qui ne vont pas et faire des swaps 
     }
-   
+
+    //cout << "nb triangle: " << mesh.nbTriangles << endl;
+
+    for (unsigned int i=0; i<mesh.Triangles.size(); i++)
+    {
+        Triangle triangle = mesh.Triangles[i];
+        //cout << triangle.triangleValide << " " <<  endl;
+        if (triangle.triangleValide)
+        {
+            printf("triangle %d : (%d %d %d) ; voisin : %d, %d, %d ; arete : (%d,%d), (%d,%d), (%d,%d)\n", 
+            i, triangle.sommetsID[0], triangle.sommetsID[1], triangle.sommetsID[2], 
+            triangle.triVoisins[0], triangle.triVoisins[1], triangle.triVoisins[2], 
+            triangle.aretes[0].IDpt1, triangle.aretes[0].IDpt2, 
+            triangle.aretes[1].IDpt1, triangle.aretes[1].IDpt2,
+            triangle.aretes[2].IDpt1, triangle.aretes[2].IDpt2);
+        }
+    }
+
     // --------------------------------------
     //    Sauvegarde du nouveau maillage
     // --------------------------------------
+    cout << endl;
     cout << "----------------------------------------------------------------------------" << endl;
     cout << "Sauvegarde du nouveau maillage :" << endl;
     cout << "----------------------------------------------------------------------------" << endl;

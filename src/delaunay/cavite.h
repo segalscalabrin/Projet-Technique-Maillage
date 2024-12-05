@@ -3,10 +3,12 @@
 #include "../src/maths/maths.h"
 
 
-void ajouterAreteACavite(Mesh *mesh, vector<Arete> *cavite, Arete arete);
+void ajouterAreteACavite(Triangle *triangle, Cavite *cavite, int currentEdgeID);
 
-void ajouterTriangleACavite(Mesh *mesh, vector<Arete> *cavite, unsigned int t);
+void ajouterTriangleACavite(Mesh *mesh, Cavite *cavite, unsigned int t);
 
-vector<Arete> idCavite(Mesh *mesh, Point *pt);
+Cavite idCavite(Mesh *mesh, Point *pt);
 
-void reconnectionCavite(vector<Arete> cavite, Mesh *mesh, Point pt, int IDpt);
+void addVoisins(Mesh *mesh, int triDebutID, int triFinID);
+
+void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt);

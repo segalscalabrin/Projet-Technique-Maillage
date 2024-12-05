@@ -109,12 +109,30 @@ void read_mesh(string input_path, Mesh *mesh)
     triangles[0].sommetsID[0] = 1+nbVertices-1;
     triangles[0].sommetsID[1] = 2+nbVertices-1;
     triangles[0].sommetsID[2] = 4+nbVertices-1;
+    triangles[0].aretes[0].IDpt1 = triangles[0].sommetsID[0];
+    triangles[0].aretes[0].IDpt2 = triangles[0].sommetsID[1];
+    triangles[0].aretes[1].IDpt1 = triangles[0].sommetsID[1];
+    triangles[0].aretes[1].IDpt2 = triangles[0].sommetsID[2];
+    triangles[0].aretes[2].IDpt1 = triangles[0].sommetsID[2];
+    triangles[0].aretes[2].IDpt2 = triangles[0].sommetsID[0];
     triangles[0].triangleValide = true;
+    triangles[0].triVoisins[0] = -1;
+    triangles[0].triVoisins[1] = -1;
+    triangles[0].triVoisins[2] = 1;
 
     triangles[1].sommetsID[0] = 1+nbVertices-1;
     triangles[1].sommetsID[1] = 3+nbVertices-1;
     triangles[1].sommetsID[2] = 4+nbVertices-1;
+    triangles[1].aretes[0].IDpt1 = triangles[1].sommetsID[0];
+    triangles[1].aretes[0].IDpt2 = triangles[1].sommetsID[1];
+    triangles[1].aretes[1].IDpt1 = triangles[1].sommetsID[1];
+    triangles[1].aretes[1].IDpt2 = triangles[1].sommetsID[2];
+    triangles[1].aretes[2].IDpt1 = triangles[1].sommetsID[2];
+    triangles[1].aretes[2].IDpt2 = triangles[1].sommetsID[0];
     triangles[1].triangleValide = true;
+    triangles[1].triVoisins[0] = -1;
+    triangles[1].triVoisins[1] = -1;
+    triangles[1].triVoisins[2] = 0;
 
 
     mesh->nbVertices = nbVertices+4;

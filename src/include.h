@@ -27,7 +27,10 @@ struct Arete
 struct Triangle
 {
     array<int,3> sommetsID;
-    array<int,3> aretesID;
+    array<Arete,3> aretes;
+    array<int, 3> triVoisins; // voisins[i] = place du triangle voisin dans mesh.triangles par l'arete aretes[i]
+
+    bool triInt; 
 
     Point centre_circ;
     double rayon_circ;
@@ -39,19 +42,17 @@ struct Mesh
 {
     int nbVertices;
     int nbEdges;
-    int nbEdgesAll;
     int nbTriangles;
 
     vector<Point> Vertices;
     vector<Arete> EdgesMesh;
-    vector<Arete> EdgeAll;
     vector<Triangle> Triangles;
 };
 
 struct Cavite
 {
     vector<Arete> aretes;
-    vector<int> areteID;
+    vector<int> voisins;
 };
 
 #endif // INCLUDE_H
