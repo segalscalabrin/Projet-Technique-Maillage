@@ -7,6 +7,7 @@
 #include <string>
 #include <array>
 #include <cmath>
+#include <queue>
 
 using namespace std;
 
@@ -31,6 +32,11 @@ struct Triangle
     array<int, 3> triVoisins; // voisins[i] = place du triangle voisin dans mesh.triangles par l'arete aretes[i]
 
     bool triInt; 
+    bool colorie;
+    int couleur;
+    // -1 : non def
+    // 0 : exterieur
+    // 1 : interieur
 
     Point centre_circ;
     double rayon_circ;

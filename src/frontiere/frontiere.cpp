@@ -1,6 +1,6 @@
 #include "frontiere.h"
 
-bool isAreteInMesh(int areteId, Mesh *mesh)
+bool isAreteInMesh(int areteId, Mesh *mesh, queue<int> *aretesManquantes)
 {
     bool found(false);
     for (unsigned int triangle=0; triangle<mesh->Triangles.size(); triangle++)
@@ -22,5 +22,21 @@ bool isAreteInMesh(int areteId, Mesh *mesh)
             }
         }
     }
+    if (!found)
+    {
+        aretesManquantes->push(areteId);
+    }
     return found;
+}
+
+void findTriangles(int *tri1, int *tri2, int *areteTri1, int *areteTri2, Mesh *mesh)
+{
+
+}
+
+void Swap (int areteBord, Mesh *mesh)
+{
+    int tri1, tri2, areteTri1, areteTri2;
+    findTriangles(&tri1, &tri2, &areteTri1, &areteTri2, mesh);
+
 }

@@ -125,6 +125,8 @@ void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt)
         new_tri.sommetsID = {arete.IDpt1, arete.IDpt2, IDpt};
         new_tri.aretes = {arete_1, arete_2, arete};
         new_tri.triangleValide = true;
+        new_tri.triInt = false;
+        new_tri.couleur = -1;
         // si new tri est voisin de cavite->voisins[i], alors cavite->voisins[i] est voisin de new_tri
         new_tri.triVoisins[2] = cavite->voisins[i];
         if (cavite->voisins[i] != -1)

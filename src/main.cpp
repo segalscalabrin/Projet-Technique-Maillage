@@ -4,6 +4,7 @@
 #include "init_export/initialisation.h"
 #include "frontiere/frontiere.h"
 #include "init_export/export_mesh.h"
+#include "coloriage/coloriage.h"
 
 int main()
 {
@@ -17,7 +18,7 @@ int main()
 
     Mesh mesh;
     string input_path;
-    input_path = "data/input.mesh";
+    input_path = "data/first_test/cours.mesh";
     read_mesh(input_path, &mesh);
 
     for (unsigned int i=0; i<mesh.Triangles.size(); i++)
@@ -57,7 +58,7 @@ int main()
     save_mesh(output_path, &mesh);
     
     //Point pt = {3.65, 5.05};
-    for (int point=0; point<mesh.nbVertices; point++)
+    for (int point=0; point<mesh.nbVertices-4; point++)
     {
         Point pt = mesh.Vertices[point];
     
@@ -86,7 +87,7 @@ int main()
         //cout << "Reconnection de la cavite" << endl;
         reconnectionCavite(&cavite, &mesh, pt, point);
         //string output_path;
-        output_path = "data/output"+to_string(point+1)+".mesh";
+        output_path = "data/avecSwap/output"+to_string(point+1)+".mesh";
         save_mesh(output_path, &mesh);
 
         
@@ -94,14 +95,20 @@ int main()
     }
 
     // --------------------------------------
-    //    vérification des aretes
+    //    Vérification des aretes de bord
     // --------------------------------------
+    cout << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
+    cout << "Vérification des aretes de bord :" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
+    cout << endl;
     bool bordOK (true);
+    queue<int> aretesManquantes;
     for (int edgeb=0; edgeb<mesh.nbEdges; edgeb++)
     {
         // pour les arretes de bord, on regarde si ca correspond
         bool found(false);
-        found = isAreteInMesh(edgeb, &mesh);
+        found = isAreteInMesh(edgeb, &mesh, &aretesManquantes);
         if (! found)
         {
             bordOK = false;
@@ -116,24 +123,58 @@ int main()
     {
         printf("frontiere KO\n");
         // identifier les aretes qui ne vont pas et faire des swaps 
+
     }
 
     //cout << "nb triangle: " << mesh.nbTriangles << endl;
 
-    for (unsigned int i=0; i<mesh.Triangles.size(); i++)
+    /*for (unsigned int i=0; i<mesh.Triangles.size(); i++)
     {
         Triangle triangle = mesh.Triangles[i];
         //cout << triangle.triangleValide << " " <<  endl;
         if (triangle.triangleValide)
         {
-            printf("triangle %d : (%d %d %d) ; voisin : %d, %d, %d ; arete : (%d,%d), (%d,%d), (%d,%d)\n", 
+            printf("triangle %d : (%d %d %d) ; voisin : %d, %d, %d ; arete : (%d,%d), (%d,%d), (%d,%d) ; couleur : %d\n", 
             i, triangle.sommetsID[0], triangle.sommetsID[1], triangle.sommetsID[2], 
             triangle.triVoisins[0], triangle.triVoisins[1], triangle.triVoisins[2], 
             triangle.aretes[0].IDpt1, triangle.aretes[0].IDpt2, 
             triangle.aretes[1].IDpt1, triangle.aretes[1].IDpt2,
-            triangle.aretes[2].IDpt1, triangle.aretes[2].IDpt2);
+            triangle.aretes[2].IDpt1, triangle.aretes[2].IDpt2,
+            triangle.couleur);
         }
+    }*/
+
+    if (bordOK)
+    {
+        // --------------------------------------
+        //    Coloriage du maillage
+        // --------------------------------------
+        cout << endl;
+        cout << "----------------------------------------------------------------------------" << endl;
+        cout << "Coloriage du maillage :" << endl;
+        cout << "----------------------------------------------------------------------------" << endl;
+        cout << endl;
+    
+        coloriage(&mesh);
+        suppBoite(&mesh);
     }
+
+    /*for (unsigned int i=0; i<mesh.Triangles.size(); i++)
+    {
+        Triangle triangle = mesh.Triangles[i];
+        //cout << triangle.triangleValide << " " <<  endl;
+        if (triangle.triangleValide)
+        {
+            printf("triangle %d : (%d %d %d) ; voisin : %d, %d, %d ; arete : (%d,%d), (%d,%d), (%d,%d) ; couleur : %d\n", 
+            i, triangle.sommetsID[0], triangle.sommetsID[1], triangle.sommetsID[2], 
+            triangle.triVoisins[0], triangle.triVoisins[1], triangle.triVoisins[2], 
+            triangle.aretes[0].IDpt1, triangle.aretes[0].IDpt2, 
+            triangle.aretes[1].IDpt1, triangle.aretes[1].IDpt2,
+            triangle.aretes[2].IDpt1, triangle.aretes[2].IDpt2,
+            triangle.couleur);
+        }
+    }*/
+
 
     // --------------------------------------
     //    Sauvegarde du nouveau maillage
@@ -145,7 +186,7 @@ int main()
     cout << endl;
 
     //string output_path;
-    output_path = "data/output.mesh";
+    output_path = "data/avecSwap/output.mesh";
     save_mesh(output_path, &mesh);
 
     cout << endl;
