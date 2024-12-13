@@ -119,7 +119,6 @@ void read_mesh(string input_path, Mesh *mesh)
     triangles[0].triVoisins[0] = -1;
     triangles[0].triVoisins[1] = -1;
     triangles[0].triVoisins[2] = 1;
-    triangles[0].triInt = false;
     triangles[0].couleur = -1;
 
     triangles[1].sommetsID[0] = 1+nbVertices-1;
@@ -135,7 +134,6 @@ void read_mesh(string input_path, Mesh *mesh)
     triangles[1].triVoisins[0] = -1;
     triangles[1].triVoisins[1] = -1;
     triangles[1].triVoisins[2] = 0;
-    triangles[1].triInt = false;
     triangles[1].couleur = -1;
 
 

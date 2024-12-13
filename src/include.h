@@ -31,8 +31,6 @@ struct Triangle
     array<Arete,3> aretes;
     array<int, 3> triVoisins; // voisins[i] = place du triangle voisin dans mesh.triangles par l'arete aretes[i]
 
-    bool triInt; 
-    bool colorie;
     int couleur;
     // -1 : non def
     // 0 : exterieur
