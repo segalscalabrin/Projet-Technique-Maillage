@@ -101,7 +101,7 @@ void addVoisins(Mesh *mesh, Cavite *cavite, int triID, int triDebut, int triFin)
     }
 }
 
-void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt)
+void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt, bool raffinement)
 {
     //mesh->nbVertices += 1;
     //mesh->Vertices.push_back(pt);
@@ -128,6 +128,7 @@ void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt)
         new_tri.couleur = -1;
         // si new tri est voisin de cavite->voisins[i], alors cavite->voisins[i] est voisin de new_tri
         new_tri.triVoisins[2] = cavite->voisins[i];
+
         if (cavite->voisins[i] != -1)
         {
             int indice_arete=-5;
@@ -148,6 +149,17 @@ void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt)
                 //cavite->voisins[i], indice_arete, mesh->Triangles.size());
                 mesh->Triangles[cavite->voisins[i]].triVoisins[indice_arete] = mesh->Triangles.size();
             }
+        }
+
+        double aire;
+        aire = 1.0/2*abs(mesh->Vertices[new_tri.sommetsID[0]].x*(mesh->Vertices[new_tri.sommetsID[1]].y-mesh->Vertices[new_tri.sommetsID[2]].y)
+        + mesh->Vertices[new_tri.sommetsID[1]].x*(mesh->Vertices[new_tri.sommetsID[2]].y-mesh->Vertices[new_tri.sommetsID[0]].y)
+        + mesh->Vertices[new_tri.sommetsID[2]].x*(mesh->Vertices[new_tri.sommetsID[0]].y-mesh->Vertices[new_tri.sommetsID[1]].y));
+        
+        if ((raffinement) && (aire<pow(10, -14)))
+        {
+            new_tri.triangleValide = false;
+            mesh->nbTriangles -= 1;
         }
         
         mesh->nbTriangles += 1;

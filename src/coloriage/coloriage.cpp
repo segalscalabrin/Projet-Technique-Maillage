@@ -78,6 +78,7 @@ void suppBoite(Mesh *mesh)
         if ((mesh->Triangles[tri].triangleValide) && (mesh->Triangles[tri].couleur==0))
         {
             mesh->Triangles[tri].triangleValide = false;
+            mesh->nbTriangles -= 1;
         }
     }
 }

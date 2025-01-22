@@ -62,3 +62,87 @@ void save_mesh(string output_path, Mesh *mesh)
 
     cout << "Mesh sauvegardé avec succès dans le fichier : " << output_path << endl;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Sauvegarde la solution
+void Save_quality(const vector<double>* sol, Mesh *mesh)
+{
+	string name_file = "quality.vtk";
+	unsigned int nb_vert = mesh->nbVertices;
+    if (sol->size() != mesh->nbTriangles)
+    {
+        printf("The size of the solution vector is not the same than the number of _triangles !");
+    }
+
+	ofstream solution;
+	solution.open(name_file, ios::out);
+	solution.precision(7);
+
+	solution << "# vtk DataFile Version 3.0 " << endl;
+	solution << "2D Unstructured Grid" << endl;
+	solution << "ASCII" << endl;
+	solution << "DATASET UNSTRUCTURED_GRID" << endl;
+
+	solution << "POINTS " << nb_vert << " float " << endl;
+	for (unsigned int i = 0 ; i < nb_vert ; ++i)
+	{
+		solution << mesh->Vertices[i].x << " "
+		<< mesh->Vertices[i].y << " 0." << endl;
+	}
+	solution << endl;
+
+	solution << "CELLS " << mesh->nbTriangles << " "
+	<< mesh->nbTriangles*4 << endl;
+	for (unsigned int i = 0 ; i < mesh->Triangles.size() ; ++i)
+	{
+        if(mesh->Triangles[i].triangleValide)
+        {
+            solution << 3 << " " << ((mesh->Triangles[i]).sommetsID)[0]
+            << " " << ((mesh->Triangles[i]).sommetsID)[1]
+            << " " << ((mesh->Triangles[i]).sommetsID)[2] << endl;
+        }
+	}
+	solution << endl;
+
+	solution << "CELL_TYPES " << mesh->nbTriangles << endl;
+	for (unsigned int i = 0 ; i < mesh->Triangles.size() ; ++i)
+	{
+        if(mesh->Triangles[i].triangleValide)
+        {
+		    solution << 5 << endl;
+        }
+    }
+	solution << endl;
+
+	solution << "CELL_DATA " << mesh->nbTriangles << endl;
+	solution << "SCALARS sol float 1" << endl;
+	solution << "LOOKUP_TABLE default" << endl;
+	// To avoid strange behaviour (which appear only with Apple)
+	// with Paraview when we have very small data (e-35 for example)
+	double eps = 1.0e-10;
+    int k = 0;
+	for (unsigned int i = 0 ; i < mesh->Triangles.size() ; ++i)
+	{
+        if(mesh->Triangles[i].triangleValide)
+        {
+            solution << max(eps,(*sol)[k]) << endl;
+            k += 1;
+        }
+	}
+	solution << endl;
+
+	solution.close();
+}
+

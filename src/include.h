@@ -14,7 +14,7 @@ using namespace std;
 struct Point
 {
     double x;
-    double y; 
+    double y;
 };
 
 struct Arete
@@ -23,6 +23,7 @@ struct Arete
     int IDpt2;
     bool areteBord;
     bool areteValide;
+    int bord;
 };
 
 struct Triangle
@@ -49,7 +50,7 @@ struct Mesh
     int nbTriangles;
 
     vector<Point> Vertices;
-    vector<Arete> EdgesMesh;
+    vector<Arete> EdgesMesh; //arêtes de bord
     vector<Triangle> Triangles;
 };
 

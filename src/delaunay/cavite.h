@@ -11,4 +11,4 @@ Cavite idCavite(Mesh *mesh, Point *pt);
 
 void addVoisins(Mesh *mesh, int triDebutID, int triFinID);
 
-void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt);
+void reconnectionCavite(Cavite *cavite, Mesh *mesh, Point pt, int IDpt, bool raffinement);

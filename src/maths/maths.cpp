@@ -120,3 +120,44 @@ bool pointDansCercleCirconscrit(Point *point, Mesh *mesh, int idTriangle)
 
     return distance <= mesh->Triangles[idTriangle].rayon_circ;
 }
+
+double calculerAire (Triangle *triangle, Mesh *mesh)
+{
+    double x1, x2, x3, y1, y2, y3;
+    x1 = mesh->Vertices[triangle->sommetsID[0]].x;
+    y1 = mesh->Vertices[triangle->sommetsID[0]].y;
+    x2 = mesh->Vertices[triangle->sommetsID[1]].x;
+    y2 = mesh->Vertices[triangle->sommetsID[1]].y;
+    x3 = mesh->Vertices[triangle->sommetsID[2]].x;
+    y3 = mesh->Vertices[triangle->sommetsID[2]].y;
+    double aire = abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
+    return aire;
+}
+
+double calculerLongueur (Arete *arete, Mesh *mesh)
+{
+    double x1, x2, y1, y2;
+    x1 = mesh->Vertices[arete->IDpt1].x;
+    y1 = mesh->Vertices[arete->IDpt1].y;
+    x2 = mesh->Vertices[arete->IDpt2].x;
+    y2 = mesh->Vertices[arete->IDpt2].y;
+    double length = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+    return length;
+}
+
+void CalcQuality(vector<double> *quality, Mesh *mesh)
+{
+    int k = 0;
+    for (unsigned int j=0; j<mesh->Triangles.size() ; j++)
+    {
+        if (mesh->Triangles[j].triangleValide)
+        {
+            for (int i=0; i<3; i++)
+            {
+                (*quality)[k] += pow(calculerLongueur(&(mesh->Triangles[k].aretes[i]), mesh), 2);
+            }
+            (*quality)[k] = sqrt(3.0)/(12*calculerAire(&(mesh->Triangles[k]), mesh))*(*quality)[k];
+            k += 1;
+        }
+    }
+}

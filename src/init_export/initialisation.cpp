@@ -46,27 +46,12 @@ void read_mesh(string input_path, Mesh *mesh)
                 edges.resize(nbEdges);
                 for (int edge=0; edge<nbEdges; edge++)
                 {
-                    file>>edges[edge].IDpt1>>edges[edge].IDpt2>>bin;
+                    file>>edges[edge].IDpt1>>edges[edge].IDpt2>>edges[edge].bord;
                     edges[edge].IDpt1 -= 1;
                     edges[edge].IDpt2 -= 1;
                     edges[edge].areteValide = true;
                 }
             }
-            /*else if (mot=="Triangles")
-            {
-                file>>nbTriangles;
-                cout << "nbTriangles : " << nbTriangles << endl;
-                triangles.resize(nbTriangles);
-                for (int triangle=0; triangle<nbTriangles; triangle++)
-                {
-                    file>>triangles[triangle].sommetsID[0]>>triangles[triangle].sommetsID[1]>>triangles[triangle].sommetsID[2]>>bin;
-                    triangles[triangle].sommetsID[0] -= 1;
-                    triangles[triangle].sommetsID[1] -= 1;
-                    triangles[triangle].sommetsID[2] -= 1;
-
-                    triangles[triangle].triangleValide = true;
-                }
-            }*/
         }
         
         file.close();
@@ -75,7 +60,11 @@ void read_mesh(string input_path, Mesh *mesh)
     {
         printf("ERREUR : impossible d'ouvrir le fichier !\n");
     }
-
+    cout << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
+    cout << "Ajout de la boite englobante " << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
+    cout << endl;
     // initialisation de la boite englobante
     double xmin(vertices[0].x), xmax(vertices[0].x), ymin(vertices[0].y), ymax(vertices[0].y);
     for (int vertex=1; vertex<nbVertices; vertex++)
